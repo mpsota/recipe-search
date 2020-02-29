@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: clojure-stemmer:0.1.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/clojure-stemmer/clojure-stemmer/0.1.0/clojure-stemmer-0.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
