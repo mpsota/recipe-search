@@ -1,16 +1,19 @@
-(ns recipe-search.ranking)
+(ns recipe-search.ranking
+  (:require [clojure.spec.alpha :as s]
+            [recipe-search.spec :as rss]))
 
 
 (defn rank
   "Simple rank function which sums number of occurences of all words"
   [words preprocessed-recipe]
-  (let [freqs (:text-frequencies preprocessed-recipe)]
-      (reduce + (map #(get freqs %) words))))
-
+  {:pre [(s/valid? ::rss/recipe preprocessed-recipe)
+         (s/valid? ::rss/words words)]}
+  (let [freqs (::rss/text-frequencies preprocessed-recipe)]
+    (reduce + (map #(get freqs %) words))))
 
 (defn sort-by-rank [recipes words]
   ;(rank/rank (get-recipe "venison-ragu.txt") (pre/preprocess-words ["tomatoes" "olives" "onion"]))
-  (sort recipes (fn [a b] ))
+  (sort recipes (fn [a b]))
 
   )
 

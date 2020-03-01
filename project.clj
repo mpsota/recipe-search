@@ -10,6 +10,7 @@
                  [clojure-stemmer "0.1.0"]
                  [snowball-stemmer "0.1.0"]]
   :repl-options {:init-ns recipe-search.core}
+  :main ^:skip-aot recipe-search.core
   :profiles {:uberjar       {:aot :all}
              :dev           [:project/dev :profiles/dev]
              :test          [:project/test :profiles/test]

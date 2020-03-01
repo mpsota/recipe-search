@@ -1,6 +1,8 @@
 (ns recipe-search.preprocessing
   (:require [clojure.string :as str]
-            [clojure-stemmer.porter.stemmer :as stemmer]))
+            [clojure-stemmer.porter.stemmer :as stemmer]
+            [clojure.spec.alpha :as s]
+            [recipe-search.spec :as rss]))
 
 (def stop-words "List of all english stop-words which we want to remove"
   (-> "./resources/stop-words.txt"
@@ -25,7 +27,9 @@
   (map #(str/replace % #"[`’']" "") text))
 
 (defn preprocess-words [words]
-  (-> words downcase-text
+  {:pre [(s/valid? ::rss/words words)]}
+  (-> words
+      downcase-text
       remove-interpunction-chars
       remove-stop-words ;; remove stop words before quotes, as some stop words contain them (e.g 'it's')
       remove-quotes
@@ -35,6 +39,7 @@
 (defn split-words
   "Split text on spaces and few other special characters which are sometimes used without spaces around them"
   [text]
+  {:pre [(s/valid? string? text)]}
   (str/split text #"[\s+\&\;]"))
 
 (defn preprocess-text [text]
@@ -48,21 +53,24 @@
   Be aware that not all recipes are correctly structured, in that case we store just :text.
   :text-frequencies is frequency of words in the main text."
   [recipe]
-  (let [lines (str/split-lines (:raw-text recipe))
+  ;{:pre [(s/valid? ::rss/recipe recipe)]}
+  (let [lines (str/split-lines (::rss/raw-text recipe))
         preprocessed-lines  (map preprocess-text lines)
         preprocessed-text (reduce concat preprocessed-lines)
         [title _intro-text introduction _ingr-text ingredients method-text method] preprocessed-lines]
     (cond
       (not= (.length lines) 7) (do
-                                 (print (format "%s not correctly structured\n" (:id recipe)))
+                                 (print (format "%s not correctly structured\n" (::rss/id recipe)))
                                  (assoc recipe
-                                   :text preprocessed-text
-                                   :text-frequencies (frequencies preprocessed-text)))
+                                   ::rss/text preprocessed-text
+                                   ::rss/text-frequencies (frequencies preprocessed-text)))
       :else (assoc recipe
               ;;Fields not used for now, but maybe we should use them to improve our rank algorithms?
-              :text preprocessed-text
-              :text-frequencies (frequencies preprocessed-text)
-              :title title
-              :introduction introduction
-              :ingredients ingredients
-              :method method))))
+              ::rss/text preprocessed-text
+              ::rss/text-frequencies (frequencies preprocessed-text)
+              ::rss/title title
+              ::rss/introduction introduction
+              ::rss/ingredients ingredients
+              ::rss/method method))))
+
+(defn preprocess-recipe2 [recipe] )
