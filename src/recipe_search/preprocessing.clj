@@ -27,7 +27,7 @@
   (map #(str/replace % #"[`’']" "") text))
 
 (defn preprocess-words [words]
-  {:pre [(s/valid? ::rss/words words)]}
+  ;{:pre [(s/valid? ::rss/words words)]}
   (-> words
       downcase-text
       remove-interpunction-chars
@@ -39,7 +39,7 @@
 (defn split-words
   "Split text on spaces and few other special characters which are sometimes used without spaces around them"
   [text]
-  {:pre [(s/valid? string? text)]}
+  ;{:pre [(s/valid? string? text)]}
   (str/split text #"[\s+\&\;]"))
 
 (defn preprocess-text [text]
@@ -72,5 +72,3 @@
               ::rss/introduction introduction
               ::rss/ingredients ingredients
               ::rss/method method))))
-
-(defn preprocess-recipe2 [recipe] )

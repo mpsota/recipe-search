@@ -1,0 +1,5 @@
+{:profiles/dev {:env {:api-port    "3001"
+                      :api-host "http://localhost"
+                      :dev         "true"}}
+ :profiles/test {:env {:api-port    "4001"
+                       :api-host "http://localhost"}}}

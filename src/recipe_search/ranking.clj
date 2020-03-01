@@ -6,7 +6,7 @@
 (defn rank
   "Simple rank function which sums number of occurences of all words"
   [words preprocessed-recipe]
-  {:pre [(s/valid? ::rss/recipe preprocessed-recipe)
+  #_{:pre [(s/valid? ::rss/recipe preprocessed-recipe)
          (s/valid? ::rss/words words)]}
   (let [freqs (::rss/text-frequencies preprocessed-recipe)]
     (reduce + (map #(get freqs %) words))))
