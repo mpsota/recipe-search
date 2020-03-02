@@ -1,0 +1,8 @@
+{:lein     true
+ :nrepl    {:port 9000}
+ :dev-http {8000 "resources/public"}
+ :builds
+           {:app {:target     :browser
+                  :output-dir "resources/public/js"
+                  :asset-path "/js"
+                  :modules    {:app {:init-fn recipe-search.frontend/start-frontend}}}}}

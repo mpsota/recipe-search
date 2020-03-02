@@ -7,17 +7,17 @@
             [recipe-search.preprocessing :as pre]
             [recipe-search.ranking :as rank]))
 
-(defn search-in [words]
+(defn search-in [recipes-db words]
   "Return set of recipe-ids which contains all requested words"
-  (reduce set/intersection (map db/get-recipes-with-word (pre/preprocess-words words))))
+  (reduce set/intersection (map #(db/get-recipes-with-word recipes-db %) (pre/preprocess-words words))))
 
 (defn search
   "Main search function. Uses rank algorithm"
-  ([words keyseq]
-   (map #(select-keys % keyseq) (search words)))
-  ([words]
-  (let [preprocessed-words (pre/preprocess-words words)
-        matched-recipes (map db/get-recipe (search-in words))]
-    (take 10 (sort-by (partial rank/rank preprocessed-words) > matched-recipes)))))
+  ([recipes-db words keyseq]
+   (map #(select-keys % keyseq) (search recipes-db words)))
+  ([recipes-db words]
+   (let [preprocessed-words (pre/preprocess-words words)
+         matched-recipes (map #(db/get-recipe recipes-db %) (search-in recipes-db words))]
+     (take 10 (sort-by (partial rank/rank preprocessed-words) > matched-recipes)))))
 
-; (time (map ::rss/id (search ["tomatoes" "olives" "onion"])))
+; (time (map ::rss/id (search (:recipes-db system.repl/system) ["tomatoes" "olives" "onion"])))

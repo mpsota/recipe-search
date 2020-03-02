@@ -18,7 +18,11 @@
                  [ring/ring-mock "0.4.0"]                   ;; testing
                  [liberator "0.15.2"]
                  [clojure-stemmer "0.1.0"]
-                 [snowball-stemmer "0.1.0"]]
+                 [snowball-stemmer "0.1.0"]
+                 ;; shadow-cljs
+                 [thheller/shadow-cljs "2.8.90"]
+                 [reagent "0.8.1"]
+                 [cljs-ajax "0.8.0"]]
   :plugins [[lein-environ "1.1.0"]
             [lein-figwheel "0.5.18"]]
   :main ^:skip-aot recipe-search.core

@@ -14,13 +14,16 @@
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.cors :refer [wrap-cors]]
             [recipe-search.spec :as rss]
+            [recipe-search.database :as db]
             [recipe-search.api :as api]))
 
 
 (declare dev-system)
 
 (defsystem dev-system
-  [:routes (new-endpoint api/app-routes)
+  [:recipes-db (db/new-recipes-db)                          ;; contains :db and :words-index
+   :routes (-> (new-endpoint api/app-routes)
+               (component/using [:recipes-db]))
    :middleware (new-middleware {:middleware [wrap-restful-format
                                              [wrap-trace :ui]
                                              [wrap-defaults api-defaults]

@@ -4,18 +4,19 @@
             [recipe-search.spec :as rss]
             [clojure.set :as set]
             [recipe-search.preprocessing :as pre]
-            [recipe-search.ranking :as rank]))
+            [recipe-search.ranking :as rank]
+            [com.stuartsierra.component :as component]))
 
 
-(def db "Database containg slurped recipes" (atom {}) )
-(def words-index "Index of all words used in all recipes. Key is word, value is set of recipe-ids with this word" (atom {}))
-(def recipes (atom {}))
+#_(def db "Database containg slurped recipes" (atom {}))
+#_(def words-index "Index of all words used in all recipes. Key is word, value is set of recipe-ids with this word" (atom {}))
+#_(def recipes (atom {}))
 
-(defn get-recipe [id]
-  (get @db id))
+(defn get-recipe [recipes-db id]
+  (get (:db recipes-db) id))
 
-(defn get-recipes-with-word [word]
-  (get @words-index word))
+(defn get-recipes-with-word [recipes-db word]
+  (get (:words-index recipes-db) word))
 
 (defn read-recipe [file]
   ; Some of the recipes files has user readable format:
@@ -51,13 +52,27 @@
           {}
           (vals db)))
 
-(defn init
+(defn init-db
   "Initialize 'database'"
   []
-  (reset! recipes (->> "./resources/recipes"
-                       clojure.java.io/file
-                       file-seq
-                       (filter #(.isFile %))))
-  (reset! db (initialize-database @recipes))
-  (reset! words-index (create-index @db))
-  true)
+  (let [recipes (->> "./resources/recipes"
+                     clojure.java.io/file
+                     file-seq
+                     (filter #(.isFile %)))
+        db (initialize-database recipes)]
+    {:db          db
+     :words-index (create-index db)}))
+
+;; Component
+
+(defrecord RecipesDb []
+  component/Lifecycle
+  (start [component]
+    (merge component (init-db)))
+  (stop [component]
+    (-> component
+        (dissoc :db)
+        (dissoc :words-index))))
+
+(defn new-recipes-db []
+  (map->RecipesDb {}))
