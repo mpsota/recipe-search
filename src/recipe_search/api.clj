@@ -15,7 +15,7 @@
   :handle-exception basic-error-handler
   :available-media-types ["application/json"]
   :allowed-methods [:get]
-  :handle-ok "Use /api/search endpoint with query parameter")
+  :handle-ok "Use /index.html")
 
 (defresource search [recipes-db query]
   :handle-exception basic-error-handler

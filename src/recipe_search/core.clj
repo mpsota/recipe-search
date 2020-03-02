@@ -14,5 +14,5 @@
 (defn -main [& args]
   (set-init! #'dev-system)
   (start)
-  (log/info (format "API Server started at: %s:%s" (env :api-host) (env :api-port)))
+  (log/info (format "Server started at: %s:%s" (env :api-host) (env :api-port)))
   )

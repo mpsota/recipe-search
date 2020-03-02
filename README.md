@@ -41,9 +41,10 @@ search=> (time (search (:recipes-db system.repl/system) ["lasagne" "tomatoes" "o
 ### Web browser
 
 ```
+$ npm install
 $ npx shadow-cljs release app
 $ lein run
-Enter http://localhost:8000
+Enter http://localhost:3001/index.html
 ```
 
 ## License
