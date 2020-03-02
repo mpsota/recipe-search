@@ -5,4 +5,5 @@
 (s/def ::words (s/* ::word))
 
 (s/def ::recipe (s/keys :req [::id ::raw-text ::text]))
+(s/def ::recipes (s/* ::recipe))
 

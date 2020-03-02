@@ -7,8 +7,8 @@
             [ajax.core :as ajax]
             [clojure.string :as string]))
 
-(defonce query (r/atom "Tomatoes Ham Olives"))
-(defonce results (r/atom []))
+(defonce query (r/atom "Tomatoes Ham Olives"))              ; Keeps current query string
+(defonce results (r/atom []))                               ; Keeps query results returned by API
 
 (defn search-form
   "Search field with search button"
@@ -30,7 +30,7 @@
      "Search!"]]])
 
 (defn results-table
-  ""
+  "Component to display query results - table with 2 columns"
   []
   [:> Table {:celled true}
    [:> Table.Header
@@ -47,7 +47,7 @@
          @results)]])
 
 (defn main-page
-  "Main page"
+  "Main page - Grid with 3 columns. Title at the top, Search component at the in the middle row, results component at the bottom."
   []
   [:> Grid {:columns 3
             :style   {:width      "75%"
@@ -74,6 +74,4 @@
     [:> Grid.Column
      [results-table]]
     [:> Grid.Column]
-    ]
-
-   ])
+    ]])

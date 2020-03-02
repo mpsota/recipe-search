@@ -7,18 +7,7 @@
             [recipe-search.ranking :as rank]
             [com.stuartsierra.component :as component]))
 
-
-#_(def db "Database containg slurped recipes" (atom {}))
-#_(def words-index "Index of all words used in all recipes. Key is word, value is set of recipe-ids with this word" (atom {}))
-#_(def recipes (atom {}))
-
-(defn get-recipe [recipes-db id]
-  (get (:db recipes-db) id))
-
-(defn get-recipes-with-word [recipes-db word]
-  (get (:words-index recipes-db) word))
-
-(defn read-recipe [file]
+(defn- read-recipe [file]
   ; Some of the recipes files has user readable format:
   ; <TITLE>
   ; Introduction:
@@ -31,7 +20,7 @@
   {::rss/id       (.getName file)
    ::rss/raw-text (slurp file)})
 
-(defn initialize-database
+(defn- initialize-database
   "Creates database (for simplicity as in memory map) with read and preprocessed recipes"
   [recipes-files]
   (reduce (fn [acc file]
@@ -41,27 +30,35 @@
           {}
           recipes-files))
 
-(defn create-index [db]
+(defn- create-index [db]
+  "Creates map. Keys are words used in recipes, values are set of recipe-ids using given word"
+  #_{"tomato" #{"recip1.txt" "recipe2.txt"}
+     "soup"   #{"recipe1.txt"}}
   (reduce (fn [acc recipe]
             (let [id (::rss/id recipe)]
               (reduce (fn [acc word]
-                        ;(print acc word)
                         (assoc acc word (conj (get acc word #{}) id)))
                       acc
                       (::rss/text recipe))))
           {}
           (vals db)))
 
-(defn init-db
-  "Initialize 'database'"
+(defn- init-db
+  "Initialize 'database' as map of :db and :words-index which is going to be used as :recipes-db later"
   []
   (let [recipes (->> "./resources/recipes"
                      clojure.java.io/file
                      file-seq
                      (filter #(.isFile %)))
         db (initialize-database recipes)]
-    {:db          db
-     :words-index (create-index db)}))
+    {:db          db                                        ; "Database containing slurped recipes"
+     :words-index (create-index db)}))                      ; "Index of all words used in all recipes. Key is word, value is set of recipe-ids with this word"
+
+(defn get-recipe [recipes-db id]
+  (get (:db recipes-db) id))
+
+(defn get-recipes-with-word [recipes-db word]
+  (get (:words-index recipes-db) word))
 
 ;; Component
 
