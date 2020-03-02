@@ -1,6 +1,6 @@
 # Recipe search
 
-This is a program solving the recipe search problem.
+Program solving the recipe search problem.
 
 ## Essential business stakeholder and technical requirements:
 
