@@ -13,12 +13,12 @@
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.cors :refer [wrap-cors]]
-            [recipe-search.spec :as rss]
             [recipe-search.database :as db]
             [recipe-search.api :as api]))
 
-
 (declare dev-system)
+
+;;; For simplicity we use dev-system for development, production and tests
 
 (defsystem dev-system
   [:recipes-db (db/new-recipes-db)                          ;; contains :db and :words-index

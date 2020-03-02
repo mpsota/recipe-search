@@ -19,6 +19,7 @@
                  [liberator "0.15.2"]
                  [clojure-stemmer "0.1.0"]
                  [snowball-stemmer "0.1.0"]
+                 [com.taoensso/timbre "4.7.0"]
                  ;; shadow-cljs
                  [thheller/shadow-cljs "2.8.90"]
                  [reagent "0.8.1"]
@@ -34,12 +35,12 @@
              :profiles/dev  {}
              :profiles/test {}
              :project/dev   {:aot :all
-                             :env {:api-url      "http://127.0.0.1:8080"
-                                   :http-port    "8080"
+                             :env {:api-host     "http://localhost"
+                                   :api-port     "3001"
                                    :allow-origin ".*"
                                    }}
              :project/test  {:aot :all
-                             :env {:api-url      "http://127.0.0.1:8080"
-                                   :http-port    "8080"
+                             :env {:api-host     "http://localhost"
+                                   :api-port     "3001"
                                    :allow-origin ".*"
                                    }}})

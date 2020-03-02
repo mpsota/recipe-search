@@ -19,7 +19,8 @@ This is a program solving the recipe search problem.
 
 ## Usage
 
-Copy `project.clj.example` as `project.clj` so the configuration suits your needs. 
+Copy `profile.clj.example` as `profile.clj` so the configuration suits your needs.
+Without `profiles.clj` default configuration from `project.clj` will be used (api on `3001`). 
 
 ### REPL
 ```
@@ -40,8 +41,9 @@ search=> (time (search (:recipes-db system.repl/system) ["lasagne" "tomatoes" "o
 ### Web browser
 
 ```
-
-npx shadow-cljs watch app
+$ npx shadow-cljs release app
+$ lein run
+Enter http://localhost:8000
 ```
 
 ## License

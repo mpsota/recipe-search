@@ -2,6 +2,8 @@
   (:require [clojure.string :as str]
             [clojure.spec.alpha :as s]
             [recipe-search.spec :as rss]
+            [environ.core :refer [env]]
+            [taoensso.timbre :as log]
             [clojure.set :as set]
             [recipe-search.systems :refer [dev-system]]
             [recipe-search.database :as db]
@@ -11,6 +13,6 @@
 
 (defn -main [& args]
   (set-init! #'dev-system)
-  (db/init)
   (start)
+  (log/info (format "API Server started at: %s:%s" (env :api-host) (env :api-port)))
   )

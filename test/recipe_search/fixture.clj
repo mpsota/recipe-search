@@ -1,8 +1,14 @@
 (ns recipe-search.fixture
   (:require [clojure.test :refer :all]
-            [recipe-search.database :as db]))
+            [system.repl :refer [set-init! start stop]]
+            [clj-http.client :as client]
+            [recipe-search.systems :refer [dev-system]]
+            [recipe-search.database :as db]
+            [taoensso.timbre :as log]))
 
 (defn with-db-fixture [f]
-  (format "Inicjalizing database")
-  (db/init)
-  (f))
+  (log/info "Initializing database")
+  (set-init! #'dev-system)
+  (start)
+  (f)
+  (stop))

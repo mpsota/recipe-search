@@ -15,7 +15,7 @@
   :handle-exception basic-error-handler
   :available-media-types ["application/json"]
   :allowed-methods [:get]
-  :handle-ok "Use /api/search endpoint.")
+  :handle-ok "Use /api/search endpoint with query parameter")
 
 (defresource search [recipes-db query]
   :handle-exception basic-error-handler
@@ -25,8 +25,7 @@
   :malformed? (fn [ctx] (or (empty? query)
                             (not (s/valid? ::rss/words (:words ctx)))
                             (empty? (:words ctx))))
-  :handle-ok (fn [ctx] (search/search recipes-db (:words ctx) [::rss/id ::rss/raw-text]))
-  )
+  :handle-ok (fn [ctx] (search/search recipes-db (:words ctx) [::rss/id ::rss/raw-text])))
 
 (defn app-routes [{:keys [recipes-db]}]
   (routes
