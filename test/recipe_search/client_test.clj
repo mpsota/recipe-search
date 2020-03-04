@@ -16,7 +16,8 @@
   (let [search-url (format "%s:%s/%s" (env :api-host) (env :api-port) "api/search")]
     (testing "Correct Query"
       (is (= "mexican-beef-steak-quesadillas.txt"
-             (-> (client/get search-url {:query-params {:query "tomatoes lime beef steaks mexican"}
+             (-> (client/get search-url {:query-params {:query   "tomatoes lime beef steaks mexican"
+                                                        :rank-by "rank-by-words-occurrences"}
                                          :accept       :json})
                  (:body)
                  (json/read-str :key-fn keyword)
@@ -24,7 +25,8 @@
                  (:id)))))
     (testing "Empty Query"
       (is (= 400
-             (-> (client/get search-url {:query-params     {:query ""}
+             (-> (client/get search-url {:query-params     {:query   ""
+                                                            :rank-by "rank-by-words-occurrences"}
                                          :accept           :json
                                          :throw-exceptions false})
                  (:status)))))))
